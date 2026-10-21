@@ -1,0 +1,12 @@
+[project]
+name = "banking-copilot"
+version = "0.1.0"
+description = "Agentic banking support copilot built with LangGraph"
+requires-python = ">=3.11"
+
+[tool.setuptools]
+packages = ["copilot"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
