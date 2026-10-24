@@ -2,6 +2,8 @@
 
 An LLM powered support copilot for a fictional bank, built as a LangGraph agent that plans and calls reusable tools against a mock core banking API. It is designed around three things a bank cares about before an agent reaches customers: guardrails, human approval for anything that changes an account, and measurable evaluations.
 
+I was curious what it would take for a bank to trust an LLM agent anywhere near customer accounts. My take here: tight guardrails, a human approving anything that changes an account, and evals you can rerun every time something changes.
+
 ## What it does
 
 A signed in customer can ask the copilot to
@@ -41,12 +43,12 @@ user message
 
 ## Guardrails
 
-- **PII masking.** Card numbers (kept to the last 4 digits), NRIC/FIN, phone numbers and emails are masked before the message reaches the model or the conversation store, and again on the way out.
-- **Prompt injection and scope screening.** Attempts to override instructions, reveal the system prompt, reach other customers' data, or ask for actions the copilot is not allowed to take (transfers, limit changes, unfreezing) are refused before planning.
-- **Customer scoping by design.** The customer id is never a tool argument. It comes from the session, so the model cannot be talked into querying someone else's account, and the API rejects it anyway.
-- **Human approval.** `freeze_card` and `open_dispute` pause the graph with a LangGraph `interrupt`. Nothing changes until the customer confirms, and a decline leaves the account untouched.
+- PII masking. Card numbers (kept to the last 4 digits), NRIC/FIN, phone numbers and emails are masked before the message reaches the model or the conversation store, and again on the way out.
+- Prompt injection and scope screening. Attempts to override instructions, reveal the system prompt, reach other customers' data, or ask for actions the copilot is not allowed to take (transfers, limit changes, unfreezing) are refused before planning.
+- Customer scoping by design. The customer id is never a tool argument. It comes from the session, so the model cannot be talked into querying someone else's account, and the API rejects it anyway.
+- Human approval. `freeze_card` and `open_dispute` pause the graph with a LangGraph `interrupt`. Nothing changes until the customer confirms, and a decline leaves the account untouched.
 
-## Quick start
+## Try it
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
@@ -86,3 +88,7 @@ CI runs the unit tests and fails the build if any eval metric drops below its th
 ## Notes
 
 Harbour Demo Bank, its customers and its policies are entirely fictional.
+
+---
+
+If something here is unclear, broken, or just wrong, feel free to open an issue. I'm always happy to chat about it.
